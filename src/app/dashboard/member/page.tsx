@@ -30,6 +30,7 @@ import {
 import { getCurrentUser } from "@/lib/auth";
 import { one, query } from "@/lib/db";
 import { daysLeft, formatDate, naira, dayName, formatTime } from "@/lib/format";
+import { CountdownTimer } from "@/components/dash/CountdownTimer";
 import { SITE } from "@/lib/site";
 
 export const dynamic = "force-dynamic";
@@ -115,7 +116,7 @@ export default async function MemberPortal() {
             : "Welcome to Ezzy Fitness."
         }
         action={
-          <Link href="/membership" className="btn-volt btn-sm">
+          <Link href="/dashboard/member" className="btn-volt btn-sm">
             <CreditCard className="h-3.5 w-3.5" />
             {membership?.status === "active" ? "Renew membership" : "Choose a plan"}
           </Link>
@@ -136,14 +137,7 @@ export default async function MemberPortal() {
               <>
                 <p className="mt-2 text-sm text-smoke-400">
                   Valid until <span className="font-semibold text-smoke-200">{formatDate(membership.expires_at)}</span>
-                  {left !== null && left > 0 && (
-                    <>
-                      {" "}— <span className="font-semibold text-volt-300">{left} day{left === 1 ? "" : "s"} remaining</span>
-                    </>
-                  )}
-                  {left !== null && left <= 0 && (
-                    <> — <span className="font-semibold text-ember">expired today</span></>
-                  )}
+                  <CountdownTimer expiresAt={membership.expires_at} />
                 </p>
                 <div className="mt-4 max-w-md">
                   <ProgressBar

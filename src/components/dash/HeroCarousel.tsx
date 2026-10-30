@@ -1,13 +1,13 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import Image from "next/image";
 import { cn } from "@/lib/format";
+import { Unsplash } from "@/components/ui/MediaImage";
 
 const HERO_IMAGES = [
-  "/images/hero1.jpg",
-  "/images/hero2.jpg",
-  "/images/hero3.jpg",
+  "photo-1534438327276-14e5300c3a48",
+  "photo-1531568054145-a8981587ffff",
+  "photo-1517666872524-223386b8fb18",
 ];
 
 export function HeroCarousel() {
@@ -22,34 +22,35 @@ export function HeroCarousel() {
   }, [total, setIndex]);
 
   return (
-    <div className="relative h-80 md:h-96 lg:h-[600px] overflow-hidden rounded-2xl">
-      <Image
-        src={HERO_IMAGES[index]}
-        alt={`Ezzy Fitness hero ${index + 1}`}
-        fill
-        className="object-cover transition-opacity duration-500 ease-out"
-        priority
-      />
-      <div
-        className="absolute inset-0 bg-gradient-to-br from-ink-950/80 via-ink-900/90 to-ink-950/80"
-      />
+    <div className="relative h-80 md:h-96 lg:h-[600px] overflow-hidden rounded-2xl bg-ink-950/80">
+      {/* Gradient overlay */}
+      <div className="absolute inset-0 bg-gradient-to-br from-ink-950/80 via-ink-900/90 to-ink-950/80" />
+      {/* Slide content cards */}
       {HERO_IMAGES.map((img, i) => (
         <div
           key={i}
           className={cn(
             "absolute inset-0 opacity-",
-            index === i ? "" : "opacity-0",
+            index === i ? "100" : "0",
             "transition-opacity duration-1000 ease-out flex items-center justify-center"
           )}
         >
-          <h2 className="text-4xl md:text-5xl font-bold text-white">
-            {["Strength", "Cardio", "Wellness"][i]}
-          </h2>
-          <p className="mt-4 text-lg text-white/80">
-            {["Transform your body", "Boost your energy", "Find your balance"][i]}
-          </p>
+          <div className="max-w-2xl mx-auto text-center px-4">
+            <h2 className="text-4xl md:text-5xl font-bold text-white">
+              {["Strength", "Cardio", "Wellness"][i]}
+            </h2>
+            <p className="mt-4 text-lg text-white/80">
+              {["Transform your body", "Boost your energy", "Find your balance"][i]}
+            </p>
+            <Unsplash
+              id={img}
+              alt={["Strength training", "Cardio workout", "Wellness session"][i]}
+              className="h-[280px] w-full rounded-[1.6rem] sm:h-[360px] lg:h-[440px]"
+            />
+          </div>
         </div>
       ))}
+      {/* Pagination dots */}
       <div
         className="absolute bottom-6 left-6 right-6 flex justify-center gap-2"
       >

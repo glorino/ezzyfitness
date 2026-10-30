@@ -22,6 +22,7 @@ export function JoinForm({
     name: "",
     email: "",
     phone: "",
+    date_of_birth: "",
     goal: "",
   });
   const planName =
@@ -48,7 +49,8 @@ export function JoinForm({
       const message =
         `Membership request: ${plan}` +
         (chosen ? ` (${naira(chosen.price)} / ${chosen.days} days)` : "") +
-        (form.goal ? `\n\nGoal: ${form.goal}` : "\n\nGoal: not specified yet.");
+        (form.goal ? `\n\nGoal: ${form.goal}` : "\n\nGoal: not specified yet.") +
+        (form.date_of_birth ? `\n\nDate of birth: ${form.date_of_birth}` : "");
       const res = await fetch("/api/contact", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
@@ -56,6 +58,7 @@ export function JoinForm({
           name: form.name,
           email: form.email,
           phone: form.phone,
+          date_of_birth: form.date_of_birth,
           subject: `Membership request — ${plan}`,
           message,
         }),
@@ -129,6 +132,14 @@ export function JoinForm({
             onChange={set("phone")}
             placeholder="+234 ..."
             autoComplete="tel"
+          />
+        </Field>
+        <Field label="Date of birth">
+          <Input
+            type="date"
+            value={form.date_of_birth}
+            onChange={set("date_of_birth")}
+            placeholder="YYYY-MM-DD"
           />
         </Field>
         <Field label="Preferred plan">
