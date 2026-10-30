@@ -115,6 +115,15 @@ export function Navbar() {
                 </Link>
               </>
             )}
+            
+            {/* Hamburger menu button - mobile only */}
+            <button
+              onClick={() => setOpen(true)}
+              aria-label="Open menu"
+              className="grid h-10 w-10 place-items-center rounded-full border border-white/12 text-smoke-200 transition hover:border-volt-300/50 hover:text-volt-300 lg:hidden"
+            >
+              <Menu className="h-5 w-5" />
+            </button>
           </div>
         </div>
       </header>

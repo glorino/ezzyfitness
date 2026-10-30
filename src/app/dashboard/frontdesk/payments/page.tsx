@@ -44,16 +44,16 @@ export default async function FrontdeskPayments({
         ORDER BY p.paid_at DESC
         LIMIT 40`,
       [q, method]
-    ),
+    ).catch(() => []),
     query<{ today: number; week: number; month: number }>(
       `SELECT
          COALESCE(SUM(amount_ngn) FILTER (WHERE status = 'paid' AND paid_at::date = CURRENT_DATE), 0)::int AS today,
          COALESCE(SUM(amount_ngn) FILTER (WHERE status = 'paid' AND paid_at >= CURRENT_DATE - 6), 0)::int AS week,
          COALESCE(SUM(amount_ngn) FILTER (WHERE status = 'paid' AND paid_at >= date_trunc('month', CURRENT_DATE)), 0)::int AS month`
-    ),
+    ).catch(() => [{ today: 0, week: 0, month: 0 }]),
     query<{ id: number; name: string; price_ngn: number; duration_days: number }>(
       `SELECT id, name, price_ngn, duration_days FROM plans WHERE is_active ORDER BY sort_order`
-    ),
+    ).catch(() => []),
   ]);
 
   const t = totals[0];

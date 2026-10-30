@@ -109,17 +109,22 @@ export async function endSession() {
 
 /** Resolve the signed cookie to a full user row (or null). */
 export async function getCurrentUser(): Promise<SessionUser | null> {
-  const store = await cookies();
-  const payload = verifyToken(store.get(SESSION_COOKIE)?.value);
-  if (!payload) return null;
-  const user = await one<SessionUser>(
-    `SELECT id, full_name, email, phone, role, status, avatar_media_id, last_login_at::text AS last_login_at,
-            created_at::text AS created_at
-       FROM users WHERE id = $1`,
-    [payload.uid]
-  );
-  if (!user || user.status !== "active") return null;
-  return user;
+  try {
+    const store = await cookies();
+    const payload = verifyToken(store.get(SESSION_COOKIE)?.value);
+    if (!payload) return null;
+    const user = await one<SessionUser>(
+      `SELECT id, full_name, email, phone, role, status, avatar_media_id, last_login_at::text AS last_login_at,
+              created_at::text AS created_at
+         FROM users WHERE id = $1`,
+      [payload.uid]
+    );
+    if (!user || user.status !== "active") return null;
+    return user;
+  } catch (error) {
+    console.error("getCurrentUser error:", error);
+    return null;
+  }
 }
 
 export async function requireRole(...roles: Role[]): Promise<SessionUser | null> {
