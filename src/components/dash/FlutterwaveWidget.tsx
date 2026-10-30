@@ -18,9 +18,11 @@ export function FlutterwavePayButton({
   planName: string;
 }) {
   const [loading, setLoading] = useState(false);
+  const [error, setError] = useState<string | null>(null);
 
   const handlePay = async () => {
     setLoading(true);
+    setError(null);
     try {
       const res = await fetch("/api/payments", {
         method: "POST",
@@ -37,24 +39,28 @@ export function FlutterwavePayButton({
 
       const data = await res.json();
 
-      if (!res.ok) throw new Error(data.error || "Payment failed");
+      if (!res.ok) {
+        setError(data.error || "Payment failed");
+        throw new Error(data.error || "Payment failed");
+      }
 
       setLoading(false);
       // Optionally redirect or show success
       window.location.href = "/dashboard/member";
     } catch (err) {
       setLoading(false);
-      alert("Payment failed: " + (err instanceof Error ? err.message : "Unknown error"));
+      const errMsg = err instanceof Error ? err.message : "Unknown error";
+      setError(errMsg);
+      alert("Payment failed: " + errMsg);
     }
   };
 
-  return (
-    <button
-      onClick={handlePay}
-      disabled={loading}
-      className="btn-volt w-full px-6 py-3 text-lg font-medium tracking-wider transition"
-    >
-      {loading ? (
+  if (loading) {
+    return (
+      <button
+        disabled={loading}
+        className="btn-volt w-full px-6 py-3 text-lg font-medium tracking-wider transition"
+      >
         <span className="flex items-center gap-2">
           <svg
             className="h-5 w-5 animate-spin text-white-800"
@@ -71,6 +77,34 @@ export function FlutterwavePayButton({
             />
           </svg>
           Paying…
+        </span>
+      </button>
+    );
+  }
+
+  return (
+    <button
+      onClick={handlePay}
+      disabled={loading}
+      className="btn-volt w-full px-6 py-3 text-lg font-medium tracking-wider transition"
+    >
+      {error ? (
+        <span className="flex items-center gap-2">
+          <svg
+            className="h-5 w-5 text-ember"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            strokeWidth="3"
+          >
+            <circle className="opacity-25" cx="12" cy="12" r="10" />
+            <path
+              className="opacity-75"
+              fill="currentColor"
+              d="M4 12a8 8 0 018-8V0L12 3l8 6-8 6V4z"
+            />
+          </svg>
+          Pay ₦{amount.toLocaleString()}
         </span>
       ) : (
         <span className="flex items-center gap-2">

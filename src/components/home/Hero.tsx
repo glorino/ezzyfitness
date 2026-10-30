@@ -13,7 +13,6 @@ import Link from "next/link";
 import { useRef } from "react";
 import { KineticHeadline } from "@/components/ui/Reveal";
 import { Unsplash } from "@/components/ui/MediaImage";
-import { HeroCarousel } from "@/components/dash/HeroCarousel";
 import { SITE } from "@/lib/site";
 
 const STATS = [
@@ -167,9 +166,6 @@ export function Hero() {
               width={1000}
             />
             <div className="pointer-events-none absolute inset-2 rounded-[1.6rem] bg-gradient-to-t from-ink-950/70 via-transparent to-transparent" />
-
-            {/* rotating hero images */}
-            <HeroCarousel />
 
             {/* live class chip */}
             <motion.div

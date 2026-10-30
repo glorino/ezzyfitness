@@ -66,9 +66,9 @@ const NAV: Record<string, NavItem[]> = {
   ],
   member: [
     { label: "My dashboard", href: "/dashboard/member", icon: Home, match: "/dashboard/member" },
-    { label: "Membership", href: "/dashboard/member", icon: CreditCard, match: "/dashboard/member" },
+    { label: "Membership", href: "/dashboard/member/membership", icon: CreditCard, match: "/dashboard/member/membership" },
     { label: "Classes", href: "/dashboard/member/classes", icon: CalendarCheck, match: "/dashboard/member/classes" },
-    { label: "Contact coach", href: "/dashboard/member", icon: Inbox, match: "/dashboard/member" },
+    { label: "Contact coach", href: "/dashboard/member/contact", icon: Inbox, match: "/dashboard/member/contact" },
   ],
 };
 
@@ -152,7 +152,7 @@ export function Shell({
       {/* nav */}
       <nav className="flex-1 overflow-y-auto px-3 py-5" aria-label="Dashboard">
         <p className="mb-2 px-3 text-[10px] font-bold uppercase tracking-wider2 text-smoke-600">
-          {user.role === "admin" ? "Management" : user.role === "trainer" ? "Coaching" : "Front desk"}
+          {user.role === "admin" ? "Management" : user.role === "trainer" ? "Coaching" : user.role === "member" ? "Member portal" : "Front desk"}
         </p>
         <ul className="space-y-1">
           {items.map((item, i) => {
