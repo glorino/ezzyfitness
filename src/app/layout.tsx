@@ -35,7 +35,7 @@ export const metadata: Metadata = {
     description: "Benin City's premium training destination.",
     images: ["/logo.jpeg"],
   },
-  icons: { icon: "/logo-white.png", apple: "/logo-white.png" },
+  icons: { icon: "/favicon.jpeg", apple: "/favicon.jpeg" },
 };
 
 export const viewport: Viewport = {
