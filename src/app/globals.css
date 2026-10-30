@@ -1,0 +1,206 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* =====================================================================
+   Ezzy Fitness — design tokens
+   Deep "iron" surfaces + electric volt accent. Neon-on-black, gym-dark.
+   ===================================================================== */
+:root {
+  --ink: #070807;
+  --volt: #d6ff3f;
+  --volt-dim: rgba(214, 255, 63, 0.14);
+  --hairline: rgba(255, 255, 255, 0.08);
+  --nav-h: 76px;
+}
+
+@layer base {
+  * {
+    @apply border-white/10;
+  }
+
+  html {
+    scroll-behavior: smooth;
+    -webkit-text-size-adjust: 100%;
+  }
+
+  body {
+    @apply bg-ink-950 text-smoke-100 font-sans antialiased;
+    text-rendering: optimizeLegibility;
+    overflow-x: hidden;
+  }
+
+  ::selection {
+    background: var(--volt);
+    color: #0a0c0a;
+  }
+
+  h1,
+  h2,
+  h3,
+  h4 {
+    @apply font-display uppercase tracking-tight;
+  }
+
+  input,
+  textarea,
+  select {
+    @apply text-smoke-100;
+  }
+
+  input::placeholder,
+  textarea::placeholder {
+    @apply text-smoke-500;
+  }
+
+  /* Keyboard focus follows the brand */
+  :focus-visible {
+    outline: 2px solid var(--volt);
+    outline-offset: 2px;
+    border-radius: 4px;
+  }
+
+  /* Slim, on-brand scrollbar */
+  ::-webkit-scrollbar {
+    width: 10px;
+    height: 10px;
+  }
+  ::-webkit-scrollbar-track {
+    background: #0b0d0b;
+  }
+  ::-webkit-scrollbar-thumb {
+    background: #23291f;
+    border-radius: 999px;
+    border: 2px solid #0b0d0b;
+  }
+  ::-webkit-scrollbar-thumb:hover {
+    background: var(--volt);
+  }
+}
+
+@layer components {
+  /* ------------------------------------------------ surfaces */
+  .surface {
+    @apply rounded-2xl border border-white/10 bg-ink-900/70;
+  }
+
+  .surface-raised {
+    @apply rounded-2xl border border-white/10 bg-gradient-to-b from-ink-850 to-ink-900 shadow-card;
+  }
+
+  .glass {
+    @apply border border-white/10 bg-ink-950/70 backdrop-blur-xl;
+  }
+
+  .hairline {
+    border-color: var(--hairline);
+  }
+
+  /* ------------------------------------------------ buttons */
+  .btn {
+    @apply relative inline-flex items-center justify-center gap-2 rounded-full px-6 py-3 text-sm font-semibold transition-all duration-300 disabled:cursor-not-allowed disabled:opacity-60;
+  }
+
+  .btn-volt {
+    @apply btn bg-volt-300 text-ink-950 shadow-volt hover:bg-volt-200 hover:shadow-glow;
+  }
+
+  .btn-ghost {
+    @apply btn border border-white/15 bg-white/5 text-smoke-100 hover:border-volt-300/60 hover:bg-volt-300/10 hover:text-volt-300;
+  }
+
+  .btn-dark {
+    @apply btn bg-ink-950 text-volt-300 hover:bg-ink-800;
+  }
+
+  .btn-sm {
+    @apply px-4 py-2 text-xs;
+  }
+
+  /* ------------------------------------------------ text treatments */
+  .text-volt-gradient {
+    background: linear-gradient(100deg, #d6ff3f 0%, #8fffc0 45%, #4fe3ff 100%);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+  }
+
+  .text-hairline {
+    color: rgba(255, 255, 255, 0.55);
+  }
+
+  .eyebrow {
+    @apply inline-flex items-center gap-2 text-[11px] font-semibold uppercase tracking-wider2 text-volt-300;
+  }
+
+  /* ------------------------------------------------ decorative */
+  .noise::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    opacity: 0.05;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3'/%3E%3C/filter%3E%3Crect width='160' height='160' filter='url(%23n)'/%3E%3C/svg%3E");
+  }
+
+  .grid-lines {
+    background-image:
+      linear-gradient(to right, rgba(255, 255, 255, 0.045) 1px, transparent 1px),
+      linear-gradient(to bottom, rgba(255, 255, 255, 0.045) 1px, transparent 1px);
+    background-size: 72px 72px;
+    mask-image: radial-gradient(ellipse at 50% 0%, black 25%, transparent 78%);
+  }
+
+  .diag-stripes {
+    background-image: repeating-linear-gradient(
+      -45deg,
+      rgba(214, 255, 63, 0.16) 0 2px,
+      transparent 2px 12px
+    );
+  }
+
+  /* ------------------------------------------------ marquee */
+  .marquee-track {
+    @apply flex w-max animate-marquee gap-10;
+  }
+
+  /* ------------------------------------------------ cards */
+  .card-lift {
+    @apply transition-all duration-400 hover:-translate-y-1.5 hover:border-volt-300/40 hover:shadow-glow;
+  }
+
+  /* ------------------------------------------------ forms */
+  .field {
+    @apply w-full rounded-xl border border-white/10 bg-ink-900/80 px-4 py-3 text-sm text-smoke-100 outline-none transition placeholder:text-smoke-500 focus:border-volt-300/60 focus:bg-ink-850;
+  }
+
+  .label {
+    @apply mb-1.5 block text-[11px] font-semibold uppercase tracking-wider2 text-smoke-400;
+  }
+}
+
+@layer utilities {
+  .text-balance {
+    text-wrap: balance;
+  }
+  .delay-150 {
+    transition-delay: 150ms;
+  }
+  .duration-400 {
+    transition-duration: 400ms;
+  }
+}
+
+/* Honor reduced-motion preferences everywhere */
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+  }
+}
