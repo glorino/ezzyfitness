@@ -10,7 +10,7 @@ import { logActivity } from "@/lib/auth";
  * CRITICAL: This prevents payment fraud
  */
 export async function POST(req: NextRequest) {
-  const secretHash = process.env.FLW_SECRET_HASH;
+  const secretHash = process.env.FLW_SECRET_HASH || process.env.FLW_WEBHOOK_SECRET_HASH;
   
   // Verify webhook signature
   const signature = req.headers.get("verif-hash");

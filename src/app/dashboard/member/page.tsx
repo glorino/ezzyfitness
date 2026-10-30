@@ -50,10 +50,11 @@ export default async function MemberPortal() {
       emergency_name: string | null;
       emergency_phone: string | null;
       plan_name: string | null;
+      plan_id: number | null;
     }>(
       `SELECT m.membership_no, m.status, m.joined_at::text AS joined_at,
               m.expires_at::text AS expires_at, m.goals, m.gender,
-              m.emergency_name, m.emergency_phone, p.name AS plan_name
+              m.emergency_name, m.emergency_phone, p.name AS plan_name, m.plan_id
          FROM members m LEFT JOIN plans p ON p.id = m.plan_id
         WHERE m.user_id = $1`,
       [user.id]
@@ -207,6 +208,7 @@ export default async function MemberPortal() {
             memberName={user.full_name}
             amount={plan?.price_ngn ?? 15000}
             planName={plan?.duration_days ? `${plan.duration_days}-day Plan` : "Quarterly Plan"}
+            planId={membership?.plan_id ?? null}
             email={user.email}
             phone={user.phone ?? undefined}
           />

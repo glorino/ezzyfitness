@@ -42,6 +42,13 @@ export async function POST(req: NextRequest) {
       );
       if (!plan) return notFound("Membership plan not found.");
       duration = plan.duration_days;
+    } else {
+      // No planId provided - try to get member's current plan duration
+      const memberPlan = await one<{ duration_days: number }>(
+        `SELECT p.duration_days FROM members m JOIN plans p ON p.id = m.plan_id WHERE m.user_id = $1`,
+        [memberId]
+      );
+      duration = memberPlan?.duration_days || 90; // default to 90 days if no plan
     }
 
     const payment = await withTransaction(async (tx) => {
