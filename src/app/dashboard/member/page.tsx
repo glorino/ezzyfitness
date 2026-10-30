@@ -206,6 +206,8 @@ export default async function MemberPortal() {
           memberName={user.full_name}
           amount={plan?.price_ngn ?? 15000}
           planName={plan?.duration_days ? `${plan.duration_days}-day Plan` : "Quarterly Plan"}
+          email={user.email}
+          phone={user.phone ?? undefined}
         />
       )}
 
