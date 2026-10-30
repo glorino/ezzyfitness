@@ -26,9 +26,7 @@ const INCLUDED = [
 ];
 
 export function MembershipSection({ plans }: { plans: MembershipPlan[] }) {
-  const defaultPlan =
-    plans.find((p) => p.popular)?.name ?? plans.find((p) => p.days >= 30)?.name ?? plans[0]?.name ?? "";
-  const [selected, setSelected] = useState(defaultPlan);
+  const [selected, setSelected] = useState("");
 
   const choose = (name: string) => {
     setSelected(name);

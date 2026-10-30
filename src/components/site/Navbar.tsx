@@ -26,7 +26,7 @@ export function Navbar() {
   useEffect(() => {
     async function fetchUser() {
       try {
-        const res = await fetch("/api/me", {
+        const res = await fetch("/api/auth/me", {
           credentials: "include",
           cache: "no-store",
         });
@@ -34,8 +34,7 @@ export function Navbar() {
         if (res.ok && data.user) {
           setUser(data.user);
         }
-      } catch (err) {
-        console.error("Failed to fetch user:", err);
+      } catch {
         setUser(null);
       }
     }
@@ -99,21 +98,12 @@ export function Navbar() {
 
             {user ? (
               <div className="hidden sm:flex items-center gap-2">
-                {isMemberOrTrainer ? (
-                  <Link href="/dashboard/member" className="btn-volt btn-sm">
-                    Dashboard
-                  </Link>
-                ) : null}
-                {user.role === "admin" && (
-                  <Link href="/dashboard/admin" className="btn-volt btn-sm">
-                    Admin
-                  </Link>
-                )}
-                {user.role === "trainer" && (
-                  <Link href="/dashboard/trainer" className="btn-volt btn-sm">
-                    Trainer
-                  </Link>
-                )}
+                <Link
+                  href={`/dashboard/${user.role === "member" ? "member" : user.role}`}
+                  className="btn-volt btn-sm"
+                >
+                  Dashboard
+                </Link>
               </div>
             ) : (
               <>
