@@ -116,10 +116,10 @@ export default async function MemberPortal() {
             : "Welcome to Ezzy Fitness."
         }
         action={
-          <Link href="/dashboard/member/membership" className="btn-volt btn-sm">
+          <a href="#pay" className="btn-volt btn-sm">
             <CreditCard className="h-3.5 w-3.5" />
             {membership?.status === "active" ? "Renew membership" : "Choose a plan"}
-          </Link>
+          </a>
         }
       />
 
@@ -201,14 +201,16 @@ export default async function MemberPortal() {
       </StatGrid>
 
       {membership?.status === "active" && (
-        <FlutterwavePayButton
-          memberId={user.id}
-          memberName={user.full_name}
-          amount={plan?.price_ngn ?? 15000}
-          planName={plan?.duration_days ? `${plan.duration_days}-day Plan` : "Quarterly Plan"}
-          email={user.email}
-          phone={user.phone ?? undefined}
-        />
+        <div id="pay" className="scroll-mt-24">
+          <FlutterwavePayButton
+            memberId={user.id}
+            memberName={user.full_name}
+            amount={plan?.price_ngn ?? 15000}
+            planName={plan?.duration_days ? `${plan.duration_days}-day Plan` : "Quarterly Plan"}
+            email={user.email}
+            phone={user.phone ?? undefined}
+          />
+        </div>
       )}
 
       <div className="grid gap-6 xl:grid-cols-3">
