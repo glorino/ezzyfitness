@@ -11,7 +11,6 @@ import {
 import Link from "next/link";
 import { redirect } from "next/navigation";
 import { PageHeader, Panel, StatCard, StatGrid, StatusPill, Table, Td, Tr, EmptyRow, ProgressBar } from "@/components/dash/ui";
-import { BarChart } from "@/components/dash/BarChart";
 import { getCurrentUser } from "@/lib/auth";
 import { query } from "@/lib/db";
 import { daysLeft, formatDate, naira, relativeTime } from "@/lib/format";
@@ -136,11 +135,34 @@ export default async function AdminOverview() {
           className="xl:col-span-3"
           bodyClassName="p-5"
         >
-          <BarChart
-            data={revenue.map((r) => ({ label: r.month, value: r.total }))}
-            height={200}
-            formatValue={(val) => naira(val)}
-          />
+          <div className="flex h-48 items-end gap-2.5 sm:gap-4">
+            {revenue.length > 0 ? (
+              revenue.map((r) => {
+                const maxVal = Math.max(...revenue.map((x) => x.total), 1);
+                const height = Math.max(4, (r.total / maxVal) * 100);
+                return (
+                  <div key={r.month} className="group flex flex-1 flex-col items-center gap-2">
+                    <span className="text-[10px] font-semibold text-smoke-500 opacity-0 transition group-hover:opacity-100">
+                      {naira(r.total)}
+                    </span>
+                    <div className="flex w-full flex-1 items-end">
+                      <div
+                        className="w-full rounded-t-lg bg-gradient-to-t from-volt-300/30 to-volt-300 transition-all duration-500"
+                        style={{ height: `${height}%` }}
+                      />
+                    </div>
+                    <span className="text-[10px] font-bold uppercase tracking-wider text-smoke-500">
+                      {r.month}
+                    </span>
+                  </div>
+                );
+              })
+            ) : (
+              <div className="flex w-full items-center justify-center">
+                <p className="text-sm text-smoke-500">No revenue data yet</p>
+              </div>
+            )}
+          </div>
           <div className="mt-5 rounded-xl border border-white/8 bg-white/[0.03] p-4">
             <div className="mb-2 flex items-center justify-between text-xs">
               <span className="font-semibold uppercase tracking-wider text-smoke-400">

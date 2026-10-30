@@ -116,7 +116,7 @@ export default async function MemberPortal() {
             : "Welcome to Ezzy Fitness."
         }
         action={
-          <Link href="/dashboard/member" className="btn-volt btn-sm">
+          <Link href="/dashboard/member/membership" className="btn-volt btn-sm">
             <CreditCard className="h-3.5 w-3.5" />
             {membership?.status === "active" ? "Renew membership" : "Choose a plan"}
           </Link>
