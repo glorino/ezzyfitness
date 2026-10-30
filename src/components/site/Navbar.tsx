@@ -21,7 +21,7 @@ const NAV = [
 export function Navbar() {
   const [scrolled, setScrolled] = useState(false);
   const [open, setOpen] = useState(false);
-  const [user, setUser] = useState<any>();
+  const [user, setUser] = useState<{ id: number; full_name: string; email: string; role: string } | null>(null);
 
   useEffect(() => {
     async function fetchUser() {

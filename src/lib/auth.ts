@@ -46,9 +46,14 @@ export function verifyPassword(password: string, stored: string): boolean {
 
 function secret(): string {
   const s = process.env.AUTH_SECRET;
-  if (s && s.length >= 32) return s;
-  // Deterministic dev-only fallback so the app still boots without .env.local.
-  return "ezzy-fitness-insecure-dev-secret-please-set-AUTH_SECRET";
+  if (!s || s.length < 32) {
+    if (process.env.NODE_ENV === "production") {
+      throw new Error("AUTH_SECRET environment variable is required and must be at least 32 characters");
+    }
+    // Development only - generate a random secret
+    return randomBytes(48).toString("hex");
+  }
+  return s;
 }
 
 const b64url = (buf: Buffer) =>
