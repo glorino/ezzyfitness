@@ -280,13 +280,6 @@ export function Shell({
             </div>
 
             <div className="flex items-center gap-2.5">
-              <span className="hidden items-center gap-2 rounded-full border border-volt-300/25 bg-volt-300/8 px-3 py-1.5 text-[11px] font-semibold text-volt-300 md:inline-flex">
-                <span className="relative flex h-1.5 w-1.5">
-                  <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-volt-300 opacity-70" />
-                  <span className="relative inline-flex h-1.5 w-1.5 rounded-full bg-volt-300" />
-                </span>
-                Live · Neon connected
-              </span>
 
               <a
                 href="/"
