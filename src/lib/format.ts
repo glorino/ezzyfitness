@@ -66,6 +66,19 @@ export function daysLeft(expiresAt: string | null): number | null {
   return Math.ceil((exp - Date.now()) / 86_400_000);
 }
 
+/** Precise countdown: { days, hours, minutes, seconds } */
+export function countdown(expiresAt: string | null): { days: number; hours: number; minutes: number; seconds: number } | null {
+  if (!expiresAt) return null;
+  const exp = new Date(expiresAt).getTime();
+  if (Number.isNaN(exp)) return null;
+  const diff = Math.max(exp - Date.now(), 0);
+  const days = Math.floor(diff / 86_400_000);
+  const hours = Math.floor((diff % 86_400_000) / 3600_000);
+  const minutes = Math.floor((diff % 3600_000) / 60_000);
+  const seconds = Math.floor((diff % 60_000) / 1000);
+  return { days, hours, minutes, seconds };
+}
+
 /** Deterministic tailwind class for role badges. */
 export function roleTone(role: string): string {
   switch (role) {

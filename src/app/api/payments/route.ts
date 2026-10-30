@@ -10,7 +10,7 @@ const METHODS = ["cash", "transfer", "pos", "card", "other"];
  * membership by extending expiry from the later of today or current expiry.
  */
 export async function POST(req: NextRequest) {
-  const g = await guard("admin", "frontdesk");
+  const g = await guard("admin", "frontdesk", "member");
   if (g.error) return g.error;
 
   return api(async () => {

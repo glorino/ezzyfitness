@@ -10,7 +10,7 @@ import { daysLeft, formatDate, cn } from "@/lib/format";
 
 export const dynamic = "force-dynamic";
 
-const PAGE_SIZE = 20;
+const PAGE_SIZE = 10;
 
 export default async function AdminMembers({
   searchParams,

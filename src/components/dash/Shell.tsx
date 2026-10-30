@@ -66,9 +66,9 @@ const NAV: Record<string, NavItem[]> = {
   ],
   member: [
     { label: "My dashboard", href: "/dashboard/member", icon: Home, match: "/dashboard/member" },
-    { label: "Membership", href: "/membership", icon: CreditCard, match: "/membership" },
-    { label: "Classes", href: "/#schedule", icon: CalendarCheck, match: "/#schedule" },
-    { label: "Contact coach", href: "/contact", icon: Inbox, match: "/contact" },
+    { label: "Membership", href: "/dashboard/member", icon: CreditCard, match: "/dashboard/member" },
+    { label: "Classes", href: "/dashboard/member/classes", icon: CalendarCheck, match: "/dashboard/member/classes" },
+    { label: "Contact coach", href: "/dashboard/member", icon: Inbox, match: "/dashboard/member" },
   ],
 };
 

@@ -36,7 +36,7 @@ export function Hero() {
     <section
       id="top"
       ref={ref}
-      className="relative overflow-hidden pb-16 pt-[calc(var(--nav-h)+2.5rem)] sm:pb-24 lg:min-h-[100svh] lg:pt-[calc(var(--nav-h)+3.5rem)]"
+      className="relative overflow-hidden pb-6 pt-[calc(var(--nav-h)+1.5rem)] sm:pb-12 lg:min-h-[90svh] lg:pt-[calc(var(--nav-h)+2.5rem)]"
     >
       {/* backdrop layers */}
       <div className="pointer-events-none absolute inset-0 bg-hero-glow" />
