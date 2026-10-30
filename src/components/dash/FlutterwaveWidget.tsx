@@ -90,7 +90,7 @@ export function FlutterwavePayButton({
     setError(null);
 
     window.FlutterwaveCheckout({
-      public_key: process.env.NEXT_PUBLIC_FLW_PUBLIC_KEY || "",
+      public_key: process.env.NEXT_PUBLIC_FLW_PUB_KEY || "",
       tx_ref: `EZZY-${Date.now()}-${memberId}`,
       amount: amount,
       currency: "NGN",

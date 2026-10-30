@@ -48,7 +48,7 @@ export default async function MemberContact() {
         ORDER BY created_at DESC
         LIMIT 5`,
       [user.email]
-    ),
+    ).catch(() => []),
   ]);
 
   return (

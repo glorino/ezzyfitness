@@ -43,7 +43,7 @@ export default async function MemberClasses() {
         WHERE c.is_active
         ORDER BY (c.day_of_week + 6 - EXTRACT(DOW FROM CURRENT_DATE)) % 7, c.start_time`,
       []
-    ),
+    ).catch(() => []),
     query<{ class_id: number; class_name: string; day_of_week: number; start_time: string; end_time: string; location: string; trainer_name: string | null }>(
       `SELECT DISTINCT c.id AS class_id, c.name AS class_name, c.day_of_week,
               c.start_time::text AS start_time, c.end_time::text AS end_time,
@@ -54,7 +54,7 @@ export default async function MemberClasses() {
         WHERE ca.member_id = $1
         ORDER BY c.day_of_week, c.start_time`,
       [user.id]
-    ),
+    ).catch(() => []),
     query<{ session_date: string; class_name: string; status: string }>(
       `SELECT ca.session_date::text AS session_date, c.name AS class_name, ca.status
          FROM class_attendance ca
@@ -63,7 +63,7 @@ export default async function MemberClasses() {
         ORDER BY ca.session_date DESC
         LIMIT 10`,
       [user.id]
-    ),
+    ).catch(() => []),
   ]);
 
   return (

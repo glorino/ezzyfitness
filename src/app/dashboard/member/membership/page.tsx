@@ -61,13 +61,13 @@ export default async function MemberMembership() {
         ORDER BY p.paid_at DESC
         LIMIT 6`,
       [user.id]
-    ),
+    ).catch(() => []),
     query<{ n: number; this_month: number }>(
       `SELECT COUNT(*)::int AS n,
               COUNT(*) FILTER (WHERE created_at >= date_trunc('month', CURRENT_DATE))::int AS this_month
          FROM check_ins WHERE member_id = $1`,
       [user.id]
-    ),
+    ).catch(() => [{ n: 0, this_month: 0 }]),
   ]);
 
   const left = daysLeft(membership?.expires_at ?? null);

@@ -172,13 +172,22 @@ CREATE TABLE IF NOT EXISTS contact_messages (
   name        TEXT NOT NULL,
   email       TEXT NOT NULL,
   phone       TEXT,
+  date_of_birth DATE,
   subject     TEXT,
   message     TEXT NOT NULL,
   status      TEXT NOT NULL DEFAULT 'new'
               CHECK (status IN ('new','read','replied')),
+  response    TEXT,
+  replied_at  TIMESTAMPTZ,
   created_at  TIMESTAMPTZ NOT NULL DEFAULT now()
 );
 CREATE INDEX IF NOT EXISTS contact_status_idx ON contact_messages (status, created_at DESC);
+
+-- Alterations for existing tables (safe with IF NOT EXISTS)
+ALTER TABLE contact_messages ADD COLUMN IF NOT EXISTS date_of_birth DATE;
+ALTER TABLE contact_messages ADD COLUMN IF NOT EXISTS response TEXT;
+ALTER TABLE contact_messages ADD COLUMN IF NOT EXISTS replied_at TIMESTAMPTZ;
+ALTER TABLE members ADD COLUMN IF NOT EXISTS date_of_birth DATE;
 
 CREATE TABLE IF NOT EXISTS activity_log (
   id          BIGSERIAL PRIMARY KEY,
