@@ -22,7 +22,8 @@ export default async function AdminOverview() {
   const user = await getCurrentUser();
   if (!user || user.role !== "admin") redirect("/login");
 
-  const [stats, revenue, expiring, recentPayments, activity, inbox] = await Promise.all([
+  try {
+    const [stats, revenue, expiring, recentPayments, activity, inbox] = await Promise.all([
     query<{
       total_members: number;
       active_members: number;
@@ -39,7 +40,7 @@ export default async function AdminOverview() {
          (SELECT COUNT(*) FROM check_ins WHERE created_at::date = CURRENT_DATE)::int AS checkins_today,
          (SELECT COALESCE(SUM(amount_ngn), 0) FROM payments
            WHERE status = 'paid' AND paid_at >= date_trunc('month', CURRENT_DATE))::int AS revenue_month`
-    ),
+    ).catch(() => [{ total_members: 0, active_members: 0, expired_members: 0, total_trainers: 0, checkins_today: 0, revenue_month: 0 }]),
     // six-month revenue trend
     query<{ month: string; total: number }>(
       `SELECT to_char(date_trunc('month', d), 'Mon') AS month,
@@ -48,7 +49,7 @@ export default async function AdminOverview() {
                               date_trunc('month', CURRENT_DATE), interval '1 month') d
          LEFT JOIN payments p ON p.paid_at >= d AND p.paid_at < d + interval '1 month'
         GROUP BY d ORDER BY d`
-    ),
+    ).catch(() => []),
     // memberships about to run out
     query(
       `SELECT u.full_name, u.avatar_media_id, m.membership_no, m.expires_at::text AS expires_at, m.status
@@ -56,20 +57,20 @@ export default async function AdminOverview() {
         WHERE m.status = 'active' AND m.expires_at IS NOT NULL
           AND m.expires_at BETWEEN CURRENT_DATE AND CURRENT_DATE + 14
         ORDER BY m.expires_at LIMIT 6`
-    ),
+    ).catch(() => []),
     query(
       `SELECT p.id, p.amount_ngn, p.method, p.paid_at::text AS paid_at, u.full_name
          FROM payments p JOIN users u ON u.id = p.member_id
         ORDER BY p.paid_at DESC LIMIT 7`
-    ),
+    ).catch(() => []),
     query<{ action: string; entity: string | null; created_at: string; full_name: string | null }>(
       `SELECT a.action, a.entity, a.created_at::text AS created_at, u.full_name
          FROM activity_log a LEFT JOIN users u ON u.id = a.user_id
         ORDER BY a.created_at DESC LIMIT 8`
-    ),
+    ).catch(() => []),
     query<{ n: number }>(
       `SELECT COUNT(*)::int AS n FROM contact_messages WHERE status = 'new'`
-    ),
+    ).catch(() => [{ n: 0 }]),
   ]);
 
   const s = stats[0];
@@ -268,4 +269,21 @@ export default async function AdminOverview() {
       </p>
     </div>
   );
+  } catch (error) {
+    console.error("Admin overview error:", error);
+    return (
+      <div className="space-y-6">
+        <PageHeader
+          breadcrumb="Management"
+          title="Admin Overview"
+          subtitle="Welcome back to Ezzy Fitness."
+        />
+        <Panel title="Loading dashboard...">
+          <p className="text-sm text-smoke-400">
+            The dashboard is loading. If this persists, please refresh the page.
+          </p>
+        </Panel>
+      </div>
+    );
+  }
 }
